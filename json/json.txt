@@ -1,0 +1,34 @@
+First time setting myjsontest:
+    json.set myjsontest $ '{"name":"Bob"}'
+
+Setting ageDetails property in myjsontest:
+    json.set myjsontest $.ageDetails '{"currentAge":{"age":23},"previousAge":{"age":25} }'
+
+Update multi path:
+    json.set myjsontest $..age 26
+
+
+Does not set non-existing path:
+    json.set myjsontest $.abc.abd 4
+
+Can set a value when path exists:
+    json.set myjsontest $.ageDetails.previousAge.age 25
+
+ Setting an array value:
+    json.set myjsontest $.colors '["Red"]'
+
+At the beginnig of setting json:
+     json.set myjsontest1 $.name "Bob1" ==>Error, name property has to exist in json
+     json.set myjsontest1 $ '{"name":"Bob1"}' ==>Correct
+   
+    
+
+ ArrayAppend in json:
+    json.arrappend myjsontest $.colors '"blue"' '"green"'
+
+Find index of array:
+    json.arrindex myjsontest $.colors '"green"'
+       
+Get a multivalue:
+    json.get myjsontest $..age
+    
