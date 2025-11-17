@@ -1,0 +1,21 @@
+//Create country index:
+    FT.CREATE country_idx ON HASH PREFIX 1 country: SCHEMA Name AS name TEXT LocalName AS localname TEXT Region AS region TEXT Continent AS continent TAG HeadOfState AS headofstate TEXT SurfaceArea as surfacearea NUMERIC SORTABLE Population AS population NUMERIC SORTABLE GovernmentForm AS governmentform TAG SORTABLE
+
+//Create city index:
+    FT.CREATE city_idx ON HASH PREFIX 1 city: SCHEMA Name AS name TEXT CountryCode AS countrycode TAG SORTABLE Population AS population NUMERIC SORTABLE
+
+//Return is case-sensitive:
+    ft.search city_idx "London @population:[300000 +inf] -@countrycode:{GBR}" return 1 District
+
+//Query is case-insensitive:
+    ft.search city_idx "london @population:[300000 +inf] @countrycode:{can}" return 1 District
+
+//List available indexes:
+    ft._list
+
+//Using nocontent, nocontent and return 0 is same
+    ft.search country_idx "United Emirates Arab" nocontent
+    ft.search country_idx "United Emirates Arab" return 0
+
+    
+    
