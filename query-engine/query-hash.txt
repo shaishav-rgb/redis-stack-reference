@@ -13,9 +13,48 @@
 //List available indexes:
     ft._list
 
-//Using nocontent, nocontent and return 0 is same
+//Using nocontent, nocontent and return 0 is same:
     ft.search country_idx "United Emirates Arab" nocontent
     ft.search country_idx "United Emirates Arab" return 0
+
+//For exact order match:
+    ft.search country_idx "United Emirates Arab" nocontent inorder
+    
+//Doing AND and OR:
+    ft.search country_idx "@name:(Spain|Italy) @region:(Southern Europe)" return 2 name region
+
+//Doing Or in attribute:
+    ft.search country_idx "@name|localname:Ital*" return 2 name localname
+
+//Exact textr match:
+    ft.search country_idx '"United Emirates"' return 0 
+    ft.search country_idx "\"United Emirates\"" return 0 
+
+ //Dialect 2 wildcard matching:
+    FT.SEARCH country_idx "@name:w'*ndura?'" RETURN 2 name headofstate
+
+Numeric range search in dialect 2:
+    //Correct
+    FT.SEARCH country_idx "@region:(Southern Europe) @population:[50000000 +inf]" RETURN 1 name 
+
+    //Not the same, see https://redis.io/docs/latest/develop/ai/search-and-query/advanced-concepts/dialects/
+    FT.SEARCH country_idx "@region:Southern Europe @population:[50000000 +inf]" RETURN 1 name 
+
+    //does not work, syntax error
+    FT.SEARCH country_idx "@region:'Southern Europe' @population:[50000000 +inf]" RETURN 1 name 
+
+Numeric range:
+    FT.SEARCH country_idx "@region:(Southern Europe) @population:[(50000000 +inf]" RETURN 1 name
+    FT.SEARCH country_idx "@region:(Southern Europe) @population>50000000" RETURN 1 name
+
+
+Tag union:
+    ft.search country_idx "@governmentform:{monarchy|republic}" return 1 name limit 0 100 
+
+Example Search:
+    FT.SEARCH country_idx '@governmentform:{republic} @population:[-inf 100000]' RETURN 2 name surfacearea LIMIT 0 3 SORTBY surfacearea ASC
+    
+    
 
     
     
