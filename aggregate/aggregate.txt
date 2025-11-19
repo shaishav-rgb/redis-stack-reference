@@ -18,4 +18,23 @@ Using Cursor:
     FT.CURSOR READ city_idx <<1032568724>>  
 
 Using split function:
-    FT.AGGREGATE product_idx * APPLY "split(@laundry)" AS laundry_recommend GROUPBY 1 @laundry_recommend REDUCE COUNT 0 AS num_per_ctg SORTBY 2 @num_per_ctg ASC    
+    FT.AGGREGATE product_idx * APPLY "split(@laundry)" AS laundry_recommend GROUPBY 1 @laundry_recommend REDUCE COUNT 0 AS num_per_ctg SORTBY 2 @num_per_ctg ASC   
+
+Using timefmt function:
+    FT.AGGREGATE kb_idx * APPLY "timefmt(@update, '%c')" AS human_readable SORTBY 2 @update DESC LIMIT 0 1    
+
+ Aggregation:
+    FT.AGGREGATE kb_idx * GROUPBY 1 @author REDUCE MAX 1 @update as last_ updated APPLY "timefmt(@last_updated, '%c')" AS human_readable LIMIT 0 2 SORTBY 2 @last_updated DESC 
+
+Total count using groupBy 0:
+    FT.AGGREGATE kb_idx * GROUPBY 0  REDUCE COUNT 0 AS docs
+
+Returned field:
+//returns human_readable,update,creation
+    FT.AGGREGATE kb_idx "delete" APPLY "timefmt(@update, '%c')" AS human_readable SORTBY 4 @update DESC @creation DESC LIMIT 0 2
+//returns human_readable,update     
+    FT.AGGREGATE kb_idx "delete" APPLY "timefmt(@update, '%c')" AS human_readable SORTBY 2 @update DESC LIMIT 0 2
+//no way to return only human_readable
+    FT.AGGREGATE kb_idx "delete" APPLY "timefmt(@update, '%c')" AS human_readable  LIMIT 0 2
+
+    
