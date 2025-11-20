@@ -12,3 +12,14 @@ FT.SEARCH author_idx '@isbn:{8806216465}' RETURN 6 $.name AS Author '$.books[*].
 Return stored key:
     FT.SEARCH author_idx '@isbn:{8806216465}' RETURN 9 $.name AS Author '$.books[*].title' AS title __key as key
 
+load key
+    ft.aggregate author_idx "*" load 1 @__key
+
+Sorting By key:
+ft.aggregate author_idx "*" load 1 @__key  groupby 1 @__key reduce count 0 as num_docs sortby 2 @__key asc 
+
+Using $ in load and groupby
+    ft.aggregate author_idx "*"   load 2 @name @$ groupby 2 @name @$
+
+
+

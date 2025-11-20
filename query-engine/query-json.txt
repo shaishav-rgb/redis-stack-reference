@@ -1,0 +1,2 @@
+Return only selected property from a json using key
+    FT.SEARCH author_idx "*" inkeys 1 author:3 return 3 $.name as name

@@ -36,5 +36,6 @@ Returned field:
     FT.AGGREGATE kb_idx "delete" APPLY "timefmt(@update, '%c')" AS human_readable SORTBY 2 @update DESC LIMIT 0 2
 //no way to return only human_readable
     FT.AGGREGATE kb_idx "delete" APPLY "timefmt(@update, '%c')" AS human_readable  LIMIT 0 2
+  
 
     
