@@ -36,6 +36,12 @@ Returned field:
     FT.AGGREGATE kb_idx "delete" APPLY "timefmt(@update, '%c')" AS human_readable SORTBY 2 @update DESC LIMIT 0 2
 //no way to return only human_readable
     FT.AGGREGATE kb_idx "delete" APPLY "timefmt(@update, '%c')" AS human_readable  LIMIT 0 2
+
+
+ Example of sum(Comparison operator):
+ The following query shows you how to group by the field condition and apply a reduction based on the previously derived price_category. The expression @price<1000 causes a bicycle to have the price category 1 if its price is lower than 1000 USD. Otherwise, it has the price category 0. The output is the number of affordable bicycles grouped by price category.
+ 
+    FT.AGGREGATE idx:bicycle "*" LOAD 1 price APPLY "@price<1000" AS price_category GROUPBY 1 @condition REDUCE SUM 1 "@price_category" AS "num_affordable"   
   
 
     

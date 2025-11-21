@@ -21,5 +21,11 @@ ft.aggregate author_idx "*" load 1 @__key  groupby 1 @__key reduce count 0 as nu
 Using $ in load and groupby
     ft.aggregate author_idx "*"   load 2 @name @$ groupby 2 @name @$
 
+load @name field for filtering by @name, loading is required even if @name indexed:(don't know why loading is required for indexed field):(Note that you need to LOAD any field you would like returned or filter on. For pipelined fields no need to load)
+    ft.aggregate author_idx "*"  load 1 @name filter "@name!=\"Stephen King\""  groupby 1  @name   reduce count 0  as names
+    
+filter at last works:(!reduce should be exactly after groupby!)
+    ft.aggregate author_idx "*"   groupby 1  @name   reduce count 0  as names filter "@name!=='Stephen King'"
+
 
 
